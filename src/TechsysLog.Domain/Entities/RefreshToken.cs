@@ -11,18 +11,18 @@ namespace TechsysLog.Domain.Entities
     {
         public string Token { get; set; } = string.Empty;
         public Guid UserId { get; set; }
-        public DateTime ExpiryDate { get; set; }
+        public DateTime ExpiresAt { get; set; }
         public bool IsRevoked { get; set; } = false;
         public DateTime? RevokedAt { get; set; }
 
-        public bool IsActive => !IsRevoked && DateTime.UtcNow <= ExpiryDate;
+        public bool IsActive => !IsRevoked && DateTime.UtcNow <= ExpiresAt;
 
         public RefreshToken() { }
         public RefreshToken(string token, Guid userId, DateTime expiryDate)
         {
             Token = token;
             UserId = userId;
-            ExpiryDate = expiryDate;
+            ExpiresAt = expiryDate;
         }
 
         public void Revoke()

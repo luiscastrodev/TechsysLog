@@ -25,7 +25,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<Delivery?> GetByOrderIdAsync(Guid orderId)
         {
-            _logger.LogInformation("Getting delivery for order: {OrderId}", orderId);
+            _logger.LogInformation("Busca a entrega de um pedido.: {OrderId}", orderId);
 
             return await _dbSet
                 .FirstOrDefaultAsync(d => d.OrderId == orderId && !d.Deleted);
@@ -36,7 +36,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<Delivery>> GetByStatusAsync(DeliveryStatus status)
         {
-            _logger.LogInformation("Getting deliveries with status: {Status}", status);
+            _logger.LogInformation("Busca entregas por status.: {Status}", status);
 
             return await _dbSet
                 .Where(d => d.Status == status && !d.Deleted)
@@ -49,7 +49,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<Delivery>> GetFailedDeliveriesAsync()
         {
-            _logger.LogInformation("Getting failed deliveries");
+            _logger.LogInformation("Busca entregas que falharam.");
 
             return await _dbSet
                 .Where(d => d.Status == DeliveryStatus.Failed && !d.Deleted)
@@ -62,7 +62,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<Delivery>> GetRecentDeliveriesAsync(int days = 7)
         {
-            _logger.LogInformation("Getting deliveries from last {Days} days", days);
+            _logger.LogInformation("Busca entregas recentes {Days} days", days);
 
             var startDate = DateTime.UtcNow.AddDays(-days);
 

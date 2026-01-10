@@ -24,7 +24,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
 
         public async Task RevokeTokensByUserIdAsync(Guid userId)
         {
-            _logger.LogInformation("Revoking all tokens for User {UserId}", userId);
+            _logger.LogInformation("Revogando todos tokens de {UserId}", userId);
             var tokens = await _dbSet.Where(t => t.UserId == userId && !t.IsRevoked).ToListAsync();
             foreach (var token in tokens)
             {

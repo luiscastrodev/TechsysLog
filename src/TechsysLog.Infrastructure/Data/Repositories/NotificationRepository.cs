@@ -25,7 +25,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<Notification>> GetByUserIdAsync(Guid userId)
         {
-            _logger.LogInformation("Getting notifications for user: {UserId}", userId);
+            _logger.LogInformation("Buscando notificacoes do usuario: {UserId}", userId);
 
             return await _dbSet
                 .Where(n => n.UserId == userId && !n.Deleted)
@@ -38,7 +38,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<Notification>> GetUnreadByUserIdAsync(Guid userId)
         {
-            _logger.LogInformation("Getting unread notifications for user: {UserId}", userId);
+            _logger.LogInformation("Busca apenas as notificações não lidas de um usuário: {UserId}", userId);
 
             return await _dbSet
                 .Where(n => n.UserId == userId && !n.IsRead && !n.Deleted)
@@ -51,7 +51,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<int> GetUnreadCountAsync(Guid userId)
         {
-            _logger.LogInformation("Counting unread notifications for user: {UserId}", userId);
+            _logger.LogInformation("Conta quantas notificações não lidas um usuário tem: {UserId}", userId);
 
             return await _dbSet
                 .CountAsync(n => n.UserId == userId && !n.IsRead && !n.Deleted);
@@ -62,7 +62,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task MarkAsReadAsync(Guid notificationId)
         {
-            _logger.LogInformation("Marking notification as read: {NotificationId}", notificationId);
+            _logger.LogInformation("Marca uma notificação específica como lida: {NotificationId}", notificationId);
 
             var notification = await GetByIdAsync(notificationId);
             if (notification != null)
@@ -77,7 +77,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task MarkAllAsReadAsync(Guid userId)
         {
-            _logger.LogInformation("Marking all notifications as read for user: {UserId}", userId);
+            _logger.LogInformation("Marca todas as notificações de um usuário como lidas.: {UserId}", userId);
 
             var unreadNotifications = await _dbSet
                 .Where(n => n.UserId == userId && !n.IsRead && !n.Deleted)
@@ -96,7 +96,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<Notification>> GetByTypeAsync(Guid userId, NotificationType type)
         {
-            _logger.LogInformation("Getting {Type} notifications for user: {UserId}", type, userId);
+            _logger.LogInformation("  Busca notificações de um {Type} para um usuário.: {UserId}", type, userId);
 
             return await _dbSet
                 .Where(n => n.UserId == userId && n.Type == type && !n.Deleted)

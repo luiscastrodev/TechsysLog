@@ -19,7 +19,7 @@ namespace TechsysLog.Infrastructure.Data.Configuration
 
             builder.Property(u => u.Name).IsRequired();
             builder.Property(u => u.Email).IsRequired();
-            builder.Property(u => u.Password).IsRequired();
+            builder.Property(u => u.PasswordHash).IsRequired();
 
             builder.HasIndex(u => u.Email).IsUnique();
             builder.HasIndex(u => u.Deleted);

@@ -22,7 +22,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            _logger.LogInformation("Searching user by email: {Email}", email);
+            _logger.LogInformation("Buscando usuario por email: {Email}", email);
 
             return await _dbSet
                 .FirstOrDefaultAsync(u => u.Email == email && !u.Deleted);
@@ -30,7 +30,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
 
         public async Task<bool> EmailExistsAsync(string email)
         {
-            _logger.LogInformation("Checking if email exists: {Email}", email);
+            _logger.LogInformation("verificando se email existe: {Email}", email);
 
             return await _dbSet
                 .AnyAsync(u => u.Email == email && !u.Deleted);
@@ -38,7 +38,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<User>> GetActiveUsersAsync()
         {
-            _logger.LogInformation("Getting all active users");
+            _logger.LogInformation("Buscando todos usuarios ativos");
 
             return await _dbSet
                 .Where(u => u.Active && !u.Deleted)
@@ -48,7 +48,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
 
         public async Task<int> GetActiveUsersCountAsync()
         {
-            _logger.LogInformation("Counting active users");
+            _logger.LogInformation("Buscando Quantidade de usuario ativos");
 
             return await _dbSet
                 .CountAsync(u => u.Active && !u.Deleted);

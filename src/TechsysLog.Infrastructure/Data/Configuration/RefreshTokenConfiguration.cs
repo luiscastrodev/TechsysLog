@@ -22,7 +22,7 @@ namespace TechsysLog.Infrastructure.Data.Configuration
 
             builder.HasIndex(t => t.Token).IsUnique();
             builder.HasIndex(t => t.UserId);
-            builder.HasIndex(t => t.ExpiryDate);
+            builder.HasIndex(t => t.ExpiresAt);
             builder.HasIndex(t => new { t.UserId, t.IsRevoked });
         }
     }

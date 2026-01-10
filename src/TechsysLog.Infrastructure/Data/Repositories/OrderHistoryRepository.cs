@@ -25,7 +25,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<OrderHistory>> GetByOrderIdAsync(Guid orderId)
         {
-            _logger.LogInformation("Getting history for order: {OrderId}", orderId);
+            _logger.LogInformation("Buscando historico pedido por id: {OrderId}", orderId);
 
             return await _dbSet
                 .Where(oh => oh.OrderId == orderId && !oh.Deleted)
@@ -38,7 +38,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<OrderHistory>> GetChangesByUserAsync(Guid userId)
         {
-            _logger.LogInformation("Getting changes made by user: {UserId}", userId);
+            _logger.LogInformation("Mudancas feitas por usuario: {UserId}", userId);
 
             return await _dbSet
                 .Where(oh => oh.ChangedByUserId == userId && !oh.Deleted)

@@ -25,7 +25,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<Order?> GetByOrderNumberAsync(string orderNumber)
         {
-            _logger.LogInformation("Getting order by number: {OrderNumber}", orderNumber);
+            _logger.LogInformation("Buscando pedido por id: {OrderNumber}", orderNumber);
 
             return await _dbSet
                 .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber && !o.Deleted);
@@ -36,7 +36,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId)
         {
-            _logger.LogInformation("Getting orders for user: {UserId}", userId);
+            _logger.LogInformation("Buscando pedidos por usuario: {UserId}", userId);
 
             return await _dbSet
                 .Where(o => o.UserId == userId && !o.Deleted)
@@ -49,7 +49,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status)
         {
-            _logger.LogInformation("Getting orders with status: {Status}", status);
+            _logger.LogInformation("Buscando orders por status: {Status}", status);
 
             return await _dbSet
                 .Where(o => o.Status == status && !o.Deleted)
@@ -62,7 +62,7 @@ namespace TechsysLog.Infrastructure.Data.Repositories
         /// </summary>
         public async Task<int> GetOrderCountByUserAsync(Guid userId)
         {
-            _logger.LogInformation("Counting orders for user: {UserId}", userId);
+            _logger.LogInformation("Contando quantidade de pedidos por usuario: {UserId}", userId);
 
             return await _dbSet
                 .CountAsync(o => o.UserId == userId && !o.Deleted);

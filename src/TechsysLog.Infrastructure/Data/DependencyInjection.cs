@@ -22,6 +22,7 @@ namespace TechsysLog.Infrastructure.Data
             services.AddScoped<IOrderHistoryRepository, OrderHistoryRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 
             return services;
         }
