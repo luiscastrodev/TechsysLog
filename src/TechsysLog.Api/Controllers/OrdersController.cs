@@ -42,7 +42,31 @@ namespace TechsysLog.Api.Controllers
         }
 
         [Authorize(Roles = "Operator,Admin")]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(BusinessResult<IEnumerable<OrderResponseDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status400BadRequest)]
         [HttpGet("all")]
         public async Task<IActionResult> GetAll() => Ok(await _orderService.GetAllOrdersAsync());
+
+
+        [Authorize(Roles = "Operator,Admin")]
+        [HttpPatch("{orderNumber}/status")]
+        [ProducesResponseType(typeof(BusinessResult<OrderResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> ChangeStatus(string orderNumber, [FromBody] ChangeOrderStatusDto dto)
+        {
+            var changedByUserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+
+            var result = await _orderService.ChangeOrderStatusAsync(
+                orderNumber,
+                dto.NewStatus,
+                changedByUserId,
+                dto.Reason
+            );
+
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
     }
 }

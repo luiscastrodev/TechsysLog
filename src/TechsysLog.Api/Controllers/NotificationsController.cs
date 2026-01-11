@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TechsysLog.Application.Common;
+using TechsysLog.Application.DTOS;
 using TechsysLog.Application.Interfaces;
 
 namespace TechsysLog.Api.Controllers
@@ -15,8 +16,10 @@ namespace TechsysLog.Api.Controllers
         private readonly INotificationService _service;
         public NotificationsController(INotificationService service) => _service = service;
 
-        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BusinessResult<IEnumerable<NotificationDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status403Forbidden)]
+
         [HttpGet]
         public async Task<IActionResult> GetMyNotifications()
         {
@@ -24,8 +27,10 @@ namespace TechsysLog.Api.Controllers
             return Ok(await _service.GetUserNotificationsAsync(userId));
         }
 
-        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BusinessResult<int>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status403Forbidden)]
+
         [HttpGet("unread-count")]
         public async Task<IActionResult> GetUnreadCount()
         {
@@ -34,8 +39,10 @@ namespace TechsysLog.Api.Controllers
         }
 
         [HttpPatch("{id}/read")]
-        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)] 
         [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status403Forbidden)]
+
         public async Task<IActionResult> MarkAsRead(Guid id)
         {
             var result = await _service.MarkAsReadAsync(id);
@@ -45,8 +52,10 @@ namespace TechsysLog.Api.Controllers
         }
 
         [HttpPatch("read-all")]
-        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status403Forbidden)]
+
         public async Task<IActionResult> MarkAllAsRead()
         {
             var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);

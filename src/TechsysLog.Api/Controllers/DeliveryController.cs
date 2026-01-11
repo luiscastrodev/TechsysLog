@@ -21,7 +21,7 @@ namespace TechsysLog.Api.Controllers
         public async Task<IActionResult> Register(DeliveryDto dto)
         {
            var result = await _deliveryService.RegisterDeliveryAsync(dto);
-            if (!result.IsSuccess) BadRequest(result);
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
     }
