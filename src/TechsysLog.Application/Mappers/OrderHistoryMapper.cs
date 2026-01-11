@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TechsysLog.Application.DTOS;
 using TechsysLog.Domain.Entities;
+using TechsysLog.Domain.Entities.Enums;
 
 namespace TechsysLog.Application.Mappers
 {
@@ -17,7 +18,9 @@ namespace TechsysLog.Application.Mappers
             return new OrderHistoryDto(
                 Id: history.Id,
                 PreviousStatus: history.PreviousStatus,
+                PreviousStatusDescription: history.PreviousStatus.GetDescription(),
                 NewStatus: history.NewStatus,
+                NewsStatusDescription: history.NewStatus.GetDescription(),
                 Reason: history.Reason,
                 Notes: history.Notes,
                 ChangedByUserId: history.ChangedByUserId,

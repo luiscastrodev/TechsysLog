@@ -63,7 +63,7 @@ namespace TechsysLog.Application.Services
                 })
             );
 
-            return Success(orders.Select(x=>x.ToDto()));
+            return Success(ordersWithHistory.AsEnumerable());
         }
 
 
@@ -88,7 +88,7 @@ namespace TechsysLog.Application.Services
                 ordersWithHistory.Add(order.ToDto(history));
             }
 
-            return Success(orders.Select(x => x.ToDto()));
+            return Success(ordersWithHistory.AsEnumerable());
         }
 
 

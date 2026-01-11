@@ -27,6 +27,11 @@ namespace TechsysLog.Api.Controllers
         public async Task<IActionResult> Create(CreateOrderDto dto)
         {
             var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+
+            if(dto.UserId.HasValue && dto.UserId.Value != Guid.Empty)
+            {
+                userId = dto.UserId.Value;
+            }
             var order = await _orderService.CreateOrderAsync(userId, dto);
 
             return Ok(order);

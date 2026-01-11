@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TechsysLog.Application.DTOS;
 using TechsysLog.Domain.Entities;
+using TechsysLog.Domain.Entities.Enums;
 
 namespace TechsysLog.Application.Mappers
 {
@@ -18,6 +19,7 @@ namespace TechsysLog.Application.Mappers
                 Description: order.Description,
                 Amount: order.Amount,
                 Status: order.Status,
+                StatusDescription: order.Status.GetDescription(),
                 ShippingAddress: order.ShippingAddress.ToDto(),
                 CreatedAt: order.CreatedAt,
                 History: history?.Select(h => h.ToDto()) ?? Enumerable.Empty<OrderHistoryDto>()

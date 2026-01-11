@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,11 +13,11 @@ namespace TechsysLog.Domain.Entities.ENUMS
     /// </summary>
     public enum OrderStatus : byte
     {
-        Pending = 0,      // Aguardando processamento
-        Processing = 1,   // Em processamento
-        Shipped = 2,      // Enviado
-        Delivered = 3,    // Entregue
-        Cancelled = 4,    // Cancelado
-        Returned = 5      // Devolvido
+        [Description("Aguardando processamento")]Pending = 0,
+        [Description("Em processamento")]Processing = 1,
+        [Description("Enviado")] Shipped = 2, 
+        [Description("Entregue")]Delivered = 3,  
+        [Description("Cancelado")] Cancelled = 4, 
+        [Description("Devolvido")] Returned = 5  
     }
 }

@@ -10,7 +10,9 @@ namespace TechsysLog.Application.DTOS
     public record OrderHistoryDto(
     Guid Id,
     OrderStatus PreviousStatus,
+    string PreviousStatusDescription,
     OrderStatus NewStatus,
+    string NewsStatusDescription,
     string? Reason,
     string Notes,
     Guid ChangedByUserId,

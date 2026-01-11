@@ -17,6 +17,8 @@ namespace TechsysLog.Application.DTOS
         decimal Amount,
 
         [Required(ErrorMessage = "Os dados de endereço são obrigatórios.")]
-        AddressDto Address
+        AddressDto Address,
+
+        Guid? UserId = null
       );
 }

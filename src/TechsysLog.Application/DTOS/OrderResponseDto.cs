@@ -14,6 +14,7 @@ namespace TechsysLog.Application.DTOS
     string Description,
     decimal Amount,
     OrderStatus Status,
+    string StatusDescription,
     AddressDto ShippingAddress,
     DateTime CreatedAt,
     IEnumerable<OrderHistoryDto> History);
