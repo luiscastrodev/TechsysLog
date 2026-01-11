@@ -36,7 +36,7 @@ namespace TechsysLog.Domain.Entities
             if ((byte)newStatus < (byte)Status && Status != OrderStatus.Cancelled)
             {
                 throw new InvalidOperationException(
-                    $"It is not possible to change the status of '{Status}' to '{newStatus}'");
+                    $"Não é possível alterar o status de '{Status}' para '{newStatus}'");
             }
             Status = newStatus;
             UpdatedAt = DateTime.UtcNow;
@@ -46,7 +46,7 @@ namespace TechsysLog.Domain.Entities
         {
             if (Status == OrderStatus.Delivered || Status == OrderStatus.Returned)
             {
-                throw new InvalidOperationException("It is not possible to cancel a delivered order.");
+                throw new InvalidOperationException("Não é possível cancelar um pedido já entregue.");
             }
             Status = OrderStatus.Cancelled;
             UpdatedAt = DateTime.UtcNow;

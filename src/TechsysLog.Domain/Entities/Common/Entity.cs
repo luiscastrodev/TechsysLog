@@ -16,6 +16,7 @@ namespace TechsysLog.Domain.Entities.Common
         {
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
+            UpdatedAt = CreatedAt;
             Deleted = false;
         }
     }

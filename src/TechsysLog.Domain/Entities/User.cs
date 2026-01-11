@@ -26,7 +26,7 @@ namespace TechsysLog.Domain.Entities
             Email = email;
             PasswordHash = password;
             Role = userRole;
-            LockoutEnd = LockoutEnd;
+            LockoutEnd = lockoutEnd;
             FailedLoginAttempts = failedLoginAttempts;
         }
 

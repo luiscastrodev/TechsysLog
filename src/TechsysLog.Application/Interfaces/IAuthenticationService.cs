@@ -15,5 +15,8 @@ namespace TechsysLog.Application.Interfaces
         Task LockUserAsync(Guid userId, DateTime lockoutEnd);
         Task UnlockUserAsync(Guid userId);
         Task RegisterFailedLoginAsync(User user, int maxAttempts, TimeSpan lockoutDuration);
+        Task<BusinessResult<bool>> Logout(string refreshToken);
+        Task<BusinessResult<AuthenticationResponseDTO>> RefreshToken(string token);
+
     }
 }

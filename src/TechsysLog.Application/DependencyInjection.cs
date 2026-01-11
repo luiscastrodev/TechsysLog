@@ -25,6 +25,8 @@ namespace TechsysLog.Application
             services.AddScoped<IPasswordHasherService, PasswordHasherService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<INotificationHubService, NotificationHubService>();
 
             return services;
         }

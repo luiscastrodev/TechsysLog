@@ -4,12 +4,16 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using TechsysLog.Application;
 using TechsysLog.Application.Common;
+using TechsysLog.Application.Hubs;
+using TechsysLog.Application.Interfaces;
+using TechsysLog.Application.Seed;
 using TechsysLog.Domain.Interfaces;
 using TechsysLog.Infrastructure.Data;
 using TechsysLog.Infrastructure.Data.Context;
@@ -20,8 +24,39 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "TechsysLog API",
+        Version = "v1"
+    });
 
+    // Configuração do Bearer token
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Insira o token JWT desta forma: Bearer {seu_token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 builder.Services.AddSingleton<IMongoClient>(_ =>
     new MongoClient(builder.Configuration.GetConnectionString("MongoDb"))
 );
@@ -40,7 +75,18 @@ builder.Services.AddInfrastructure(builder.Configuration);
 //services 
 builder.Services.AddApplicationServices(builder.Configuration);
 
-
+// Configure CORS para SignalR 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder
+            .WithOrigins("http://localhost:3000") 
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
 
 builder.Services.AddControllers()
     .AddDataAnnotationsLocalization()
@@ -98,7 +144,7 @@ builder.Services.AddAuthentication(x =>
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.ContentType = "application/json";
 
-            var result = BusinessResult<object>.Failure("You are not authorized. Please log in again");
+            var result = BusinessResult<object>.Failure("Você não está autorizado. Por favor, faça login novamente.");
 
             return context.Response.WriteAsync(JsonSerializer.Serialize(result));
         },
@@ -107,14 +153,32 @@ builder.Services.AddAuthentication(x =>
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
             context.Response.ContentType = "application/json";
-            var result = BusinessResult<object>.Failure("You do not have permission to access this resource.");
+            var result = BusinessResult<object>.Failure("Você não tem permissão para acessar este recurso");
             return context.Response.WriteAsync(JsonSerializer.Serialize(result));
         }
     };
 });
 
+
+//SignalR 
+builder.Services.AddSignalR(options =>
+{
+    options.MaximumReceiveMessageSize = 102400000; // 100MB
+    options.HandshakeTimeout = TimeSpan.FromSeconds(15);
+    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+});
+
 var app = builder.Build();
 
+
+//seed gera registros inicial
+using (var scope = app.Services.CreateScope())
+{
+    var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+    await DbSeeder.SeedAdminAsync(userService, userRepository);
+}
 
 app.UseExceptionHandler(appBuilder =>
 {
@@ -135,7 +199,7 @@ app.UseExceptionHandler(appBuilder =>
             else
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(BusinessResult<object>.Failure("An unexpected error occurred."));
+                await context.Response.WriteAsJsonAsync(BusinessResult<object>.Failure("Ocorreu um erro inesperado."));
 
                 var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "Unhandled exception occurred for request {Path}", context.Request.Path);
@@ -166,8 +230,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapControllers();
+app.MapHub<NotificationHub>("/hubs/notifications");
+
 
 app.Run();

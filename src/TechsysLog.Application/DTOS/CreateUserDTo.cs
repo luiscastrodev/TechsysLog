@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TechsysLog.Domain.Entities.Enums;
 
 namespace TechsysLog.Application.DTOS
 {
@@ -21,6 +22,8 @@ namespace TechsysLog.Application.DTOS
         [Required(ErrorMessage = "A senha é obrigatória.")]
         [MinLength(6, ErrorMessage = "A senha deve ter no mínimo 6 caracteres.")]
         public string Password { get; set; } = string.Empty;
+
+        public UserRole Role { get; set; }
     }
 
 }

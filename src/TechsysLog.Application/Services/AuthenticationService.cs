@@ -16,12 +16,14 @@ namespace TechsysLog.Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasherService _passwordHasher;
         private readonly ITokenService _tokenService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public AuthenticationService(IUserRepository userRepository, IPasswordHasherService passwordHasher, ITokenService tokenService)
+        public AuthenticationService(IUserRepository userRepository, IPasswordHasherService passwordHasher, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _tokenService = tokenService;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public async Task<BusinessResult<AuthenticationResponseDTO>> LoginAsync(string login, string password)
@@ -94,6 +96,50 @@ namespace TechsysLog.Application.Services
 
             await _userRepository.UpdateAsync(user);
 
+        }
+
+        public async Task<BusinessResult<bool>> Logout(string refreshToken)
+        {
+
+            var storedRefreshToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
+
+            if (storedRefreshToken == null || storedRefreshToken.IsActive)
+            {
+                return BusinessResult<bool>.Success(true);
+            }
+
+            storedRefreshToken.Revoke();
+
+            await _refreshTokenRepository.UpdateAsync(storedRefreshToken);
+
+            return BusinessResult<bool>.Success(true);
+
+        }
+
+        public async Task<BusinessResult<AuthenticationResponseDTO>> RefreshToken(string token)
+        {
+            var storedRefreshToken = await _refreshTokenRepository.GetByTokenAsync(token);
+
+            if (storedRefreshToken == null || !storedRefreshToken.IsActive)
+            {
+                return Failure<AuthenticationResponseDTO>("Token expirado ou invalido");
+            }
+
+            var user = await _userRepository.GetByIdAsync(storedRefreshToken.UserId);
+            var newAccesToken = _tokenService.GenerateToken(user!);
+
+            storedRefreshToken.Revoke();
+            await _refreshTokenRepository.UpdateAsync(storedRefreshToken);
+
+            await _refreshTokenRepository.AddAsync(new RefreshToken
+            {
+                UserId = newAccesToken.UserId,
+                Token = newAccesToken.RefreshToken,
+                CreatedAt = DateTime.Now,
+                ExpiresAt = newAccesToken.RefreshTokenExpiresAt
+            });
+
+            return Success(newAccesToken);
         }
     }
 

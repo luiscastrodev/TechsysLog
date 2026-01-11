@@ -8,23 +8,29 @@ using TechsysLog.Application.Interfaces;
 using TechsysLog.Domain.Entities.ENUMS;
 using TechsysLog.Domain.Entities;
 using TechsysLog.Domain.Interfaces;
+using TechsysLog.Application.Common;
+using TechsysLog.Application.Mappers;
 
 namespace TechsysLog.Application.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService : BaseService, IOrderService
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ICepService _cepService;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IOrderHistoryRepository _orderHistoryRepository;
+        private readonly INotificationHubService _notificationHubService;
 
-        public OrderService(IOrderRepository orderRepository, ICepService cepService, INotificationRepository notificationRepository)
+        public OrderService(IOrderRepository orderRepository, ICepService cepService, INotificationRepository notificationRepository, IOrderHistoryRepository orderHistoryRepository, INotificationHubService notificationHubService)
         {
             _orderRepository = orderRepository;
             _cepService = cepService;
             _notificationRepository = notificationRepository;
+            _orderHistoryRepository = orderHistoryRepository;
+            _notificationHubService = notificationHubService;
         }
 
-        public async Task<OrderResponseDto> CreateOrderAsync(Guid userId, CreateOrderDto dto)
+        public async Task<BusinessResult<OrderResponseDto>> CreateOrderAsync(Guid userId, CreateOrderDto dto)
         {
             var address = await _cepService.GetAddressByCepAsync(dto.Address.ZipCode);
             if (address == null) throw new Exception("CEP Inválido ou não encontrado.");
@@ -40,19 +46,93 @@ namespace TechsysLog.Application.Services
             var notification = new Notification(userId, "Novo Pedido", $"Seu pedido {orderNumber} foi criado com sucesso!", NotificationType.Success, order.Id, "Order");
             await _notificationRepository.AddAsync(notification);
 
-            return new OrderResponseDto(order.Id, order.OrderNumber, order.Description, order.Amount, order.Status, null, order.CreatedAt);
-        }
+            // Notificar via SignalR 
+            await _notificationHubService.NotifyNewOrderAsync(userId, orderNumber);
 
-        public async Task<IEnumerable<OrderResponseDto>> GetUserOrdersAsync(Guid userId)
+            return Success(order.ToDto(), "Pedido Criado com sucesso.");
+        }
+        public async Task<BusinessResult<IEnumerable<OrderResponseDto>>> GetUserOrdersAsync(Guid userId)
         {
             var orders = await _orderRepository.GetByUserIdAsync(userId);
-            return orders.Select(o => new OrderResponseDto(o.Id, o.OrderNumber, o.Description, o.Amount, o.Status, null, o.CreatedAt));
+
+            var ordersWithHistory = await Task.WhenAll(
+                orders.Select(async order =>
+                {
+                    var history = await _orderHistoryRepository.GetByOrderIdAsync(order.Id);
+                    return order.ToDto(history);
+                })
+            );
+
+            return Success(orders.Select(x=>x.ToDto()));
         }
 
-        public async Task<OrderResponseDto?> GetByNumberAsync(string orderNumber)
+
+        public async Task<BusinessResult<OrderResponseDto?>> GetByNumberAsync(string orderNumber)
         {
-            var o = await _orderRepository.GetByOrderNumberAsync(orderNumber);
-            return o == null ? null : new OrderResponseDto(o.Id, o.OrderNumber, o.Description, o.Amount, o.Status, null, o.CreatedAt);
+            var order = await _orderRepository.GetByOrderNumberAsync(orderNumber);
+            if (order == null)
+                return Success<OrderResponseDto?>(null);
+
+            var history = await _orderHistoryRepository.GetByOrderIdAsync(order.Id);
+            return Success(order?.ToDto(history));
         }
+
+        public async Task<BusinessResult<IEnumerable<OrderResponseDto>>> GetAllOrdersAsync()
+        {
+            var orders = await _orderRepository.GetAllAsync();
+
+            var ordersWithHistory = new List<OrderResponseDto>();
+            foreach (var order in orders)
+            {
+                var history = await _orderHistoryRepository.GetByOrderIdAsync(order.Id);
+                ordersWithHistory.Add(order.ToDto(history));
+            }
+
+            return Success(orders.Select(x => x.ToDto()));
+        }
+
+
+        public async Task<BusinessResult<OrderResponseDto>> ChangeOrderStatusAsync(string orderNumber, OrderStatus newStatus, Guid changedByUserId, string? reason = null)
+        {
+            var order = await _orderRepository.GetByOrderNumberAsync(orderNumber);
+            if (order == null)
+                throw new BusinessException("Pedido não encontrado.");
+
+            var previousStatus = order.Status;
+            order.ChangeStatus(newStatus);
+
+            await _orderRepository.UpdateAsync(order);
+
+            var history = new OrderHistory(
+                orderId: order.Id,
+                previousStatus: previousStatus,
+                newStatus: newStatus,
+                changedByUserId: changedByUserId,
+                reason: reason
+            );
+
+            await _orderHistoryRepository.AddAsync(history);
+
+            var notification = new Notification(
+                order.UserId,
+                "Status do pedido alterado",
+                $"O pedido {order.OrderNumber} mudou de {previousStatus} para {newStatus}.",
+                NotificationType.Info,
+                order.Id,
+                "Order"
+            );
+            await _notificationRepository.AddAsync(notification);
+
+            // Notificar via SignalR 
+            await _notificationHubService.NotifyOrderStatusChangeAsync(
+                order.UserId,
+                order.OrderNumber,
+                previousStatus.ToString(),
+                newStatus.ToString()
+            );
+            return Success(order.ToDto(), "Status alterado com sucesso.");
+        }
+
+
     }
 }

@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace TechsysLog.Application.DTOS
 {
-    public record RegisterDeliveryDto(string OrderNumber, DateTime DeliveredAt, string UserReceived, string? Notes);
+    public record DeliveryDto(string OrderNumber, DateTime DeliveredAt, string UserReceived, string? Notes);
 
 }

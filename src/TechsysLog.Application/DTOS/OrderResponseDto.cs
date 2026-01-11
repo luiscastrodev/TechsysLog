@@ -9,11 +9,14 @@ using TechsysLog.Domain.Entities;
 namespace TechsysLog.Application.DTOS
 {
     public record OrderResponseDto(
-     Guid Id,
-     string OrderNumber,
-     string Description,
-     decimal Amount,
-     OrderStatus Status,
-     AddressDto ShippingAddress,
-     DateTime CreatedAt);
+    Guid Id,
+    string OrderNumber,
+    string Description,
+    decimal Amount,
+    OrderStatus Status,
+    AddressDto ShippingAddress,
+    DateTime CreatedAt,
+    IEnumerable<OrderHistoryDto> History);
+
+
 }
