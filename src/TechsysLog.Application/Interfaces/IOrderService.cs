@@ -15,7 +15,7 @@ namespace TechsysLog.Application.Interfaces
         Task<BusinessResult<IEnumerable<OrderResponseDto>>> GetUserOrdersAsync(Guid userId);
         Task<BusinessResult<OrderResponseDto?>> GetByNumberAsync(string orderNumber);
         Task<BusinessResult<IEnumerable<OrderResponseDto>>> GetAllOrdersAsync();
-        Task<BusinessResult<OrderResponseDto>> ChangeOrderStatusAsync(string orderNumber, OrderStatus newStatus, Guid changedByUserId, string? reason = null);
+        Task<BusinessResult<OrderResponseDto>> ChangeOrderStatusAsync(string orderNumber, int newStatus, Guid changedByUserId, string? reason = null);
 
     }
 }

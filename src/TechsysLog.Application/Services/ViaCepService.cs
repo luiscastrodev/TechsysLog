@@ -22,17 +22,17 @@ namespace TechsysLog.Application.Services
             _logger = logger;
         }
 
-        public async Task<Address?> GetAddressByCepAsync(string cep)
+        public async Task<Address?> GetAddressByCepAsync(string zipcode)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<ViaCepResponseDto>($"https://viacep.com.br/ws/{cep}/json/");
+                var response = await _httpClient.GetFromJsonAsync<ViaCepResponseDto>($"https://viacep.com.br/ws/{zipcode}/json/");
 
                 if (response == null || response.erro) return null;
 
                 return new Address
                 {
-                    ZipCode = response.cep ?? cep,
+                    ZipCode = response.cep ?? zipcode,
                     Street = response.logradouro ?? "",
                     Neighborhood = response.bairro ?? "",
                     City = response.localidade ?? "",

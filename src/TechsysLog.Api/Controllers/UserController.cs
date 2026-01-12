@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TechsysLog.Application.Common;
 using TechsysLog.Application.DTOS;
 using TechsysLog.Application.Interfaces;
+using TechsysLog.Application.Services;
 
 namespace TechsysLog.Api.Controllers
 {
@@ -19,5 +21,14 @@ namespace TechsysLog.Api.Controllers
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register(CreateUserDto user) => Ok(await _userService.RegisterAsync(user));
+
+
+        [ProducesResponseType(typeof(BusinessResult<IEnumerable<OrderResponseDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status400BadRequest)]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _userService.GetAllAsync());
+        }
     }
 }

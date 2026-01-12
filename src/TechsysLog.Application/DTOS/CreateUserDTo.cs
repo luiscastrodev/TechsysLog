@@ -23,7 +23,7 @@ namespace TechsysLog.Application.DTOS
         [MinLength(6, ErrorMessage = "A senha deve ter no mínimo 6 caracteres.")]
         public string Password { get; set; } = string.Empty;
 
-        public UserRole Role { get; set; }
+        public UserRole Role { get; set; } = UserRole.User;
     }
 
 }

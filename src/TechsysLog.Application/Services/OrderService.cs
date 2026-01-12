@@ -20,14 +20,17 @@ namespace TechsysLog.Application.Services
         private readonly INotificationRepository _notificationRepository;
         private readonly IOrderHistoryRepository _orderHistoryRepository;
         private readonly INotificationHubService _notificationHubService;
+        private readonly IUserRepository _userRepository;
 
-        public OrderService(IOrderRepository orderRepository, ICepService cepService, INotificationRepository notificationRepository, IOrderHistoryRepository orderHistoryRepository, INotificationHubService notificationHubService)
+        public OrderService(IOrderRepository orderRepository, ICepService cepService, INotificationRepository notificationRepository, IOrderHistoryRepository orderHistoryRepository, INotificationHubService notificationHubService,
+            IUserRepository userRepository)
         {
             _orderRepository = orderRepository;
             _cepService = cepService;
             _notificationRepository = notificationRepository;
             _orderHistoryRepository = orderHistoryRepository;
             _notificationHubService = notificationHubService;
+            _userRepository = userRepository;
         }
 
         public async Task<BusinessResult<OrderResponseDto>> CreateOrderAsync(Guid userId, CreateOrderDto dto)
@@ -39,7 +42,9 @@ namespace TechsysLog.Application.Services
 
             var orderNumber = $"TECHSYS-{DateTime.UtcNow.Ticks.ToString().Substring(10)}";
 
-            var order = new Order(orderNumber, userId, dto.Description, dto.Amount, address);
+            var currentUser = dto.UserId.HasValue && dto.UserId.Value != Guid.Empty ? dto.UserId.Value : userId;
+            var user = await _userRepository.GetByIdAsync(currentUser);
+            var order = new Order(orderNumber, userId, dto.Description, dto.Amount, address, user?.Name ?? string.Empty);
 
             await _orderRepository.AddAsync(order);
 
@@ -92,21 +97,21 @@ namespace TechsysLog.Application.Services
         }
 
 
-        public async Task<BusinessResult<OrderResponseDto>> ChangeOrderStatusAsync(string orderNumber, OrderStatus newStatus, Guid changedByUserId, string? reason = null)
+        public async Task<BusinessResult<OrderResponseDto>> ChangeOrderStatusAsync(string orderNumber, int newStatus, Guid changedByUserId, string? reason = null)
         {
             var order = await _orderRepository.GetByOrderNumberAsync(orderNumber);
             if (order == null)
                 throw new BusinessException("Pedido não encontrado.");
 
             var previousStatus = order.Status;
-            order.ChangeStatus(newStatus);
+            order.ChangeStatus((OrderStatus)newStatus);
 
             await _orderRepository.UpdateAsync(order);
 
             var history = new OrderHistory(
                 orderId: order.Id,
                 previousStatus: previousStatus,
-                newStatus: newStatus,
+                newStatus: (OrderStatus)newStatus,
                 changedByUserId: changedByUserId,
                 reason: reason
             );

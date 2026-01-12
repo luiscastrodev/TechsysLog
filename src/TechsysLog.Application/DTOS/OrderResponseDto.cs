@@ -12,6 +12,7 @@ namespace TechsysLog.Application.DTOS
     Guid Id,
     string OrderNumber,
     string Description,
+    string ClientName,
     decimal Amount,
     OrderStatus Status,
     string StatusDescription,

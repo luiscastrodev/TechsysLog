@@ -81,7 +81,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy", builder =>
     {
         builder
-            .WithOrigins("http://localhost:3000") 
+            .WithOrigins("http://localhost:4200") 
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();
@@ -176,8 +176,9 @@ using (var scope = app.Services.CreateScope())
 {
     var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
     var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+    var orderService = scope.ServiceProvider.GetRequiredService<IOrderService>();
 
-    await DbSeeder.SeedAdminAsync(userService, userRepository);
+    await DbSeeder.SeedAsync(userService, userRepository, orderService);
 }
 
 app.UseExceptionHandler(appBuilder =>

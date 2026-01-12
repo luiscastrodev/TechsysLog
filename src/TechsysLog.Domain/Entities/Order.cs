@@ -13,6 +13,8 @@ namespace TechsysLog.Domain.Entities
         public string OrderNumber { get; set; } = string.Empty;
         public Guid UserId { get; set; }
         public string Description { get; set; } = string.Empty;
+        public string ClientName { get; set; } = string.Empty;
+
         public decimal Amount { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
@@ -21,13 +23,14 @@ namespace TechsysLog.Domain.Entities
         public Order() { }
 
         public Order(string orderNumber, Guid userId, string description,
-            decimal amount, Address shippingAddress)
+            decimal amount, Address shippingAddress, string clientName)
         {
             OrderNumber = orderNumber;
             UserId = userId;
             Description = description;
             Amount = amount;
             ShippingAddress = shippingAddress;
+            ClientName = clientName;
         }
 
 

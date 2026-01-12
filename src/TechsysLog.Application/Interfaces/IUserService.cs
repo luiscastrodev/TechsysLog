@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace TechsysLog.Application.Interfaces
     public interface IUserService
     {
         Task<BusinessResult<UserResponseDto>> RegisterAsync(CreateUserDto dto);
+        Task<BusinessResult<IEnumerable< UserResponseDto>>> GetAllAsync();
+
     }
 }

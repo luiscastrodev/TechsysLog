@@ -17,6 +17,7 @@ namespace TechsysLog.Application.Mappers
                 Id: order.Id,
                 OrderNumber: order.OrderNumber,
                 Description: order.Description,
+                ClientName: order.ClientName,
                 Amount: order.Amount,
                 Status: order.Status,
                 StatusDescription: order.Status.GetDescription(),
@@ -35,7 +36,8 @@ namespace TechsysLog.Application.Mappers
                 userId: userId,
                 description: dto.Description,
                 amount: dto.Amount,
-                shippingAddress: dto.ShippingAddress.ToEntity()
+                shippingAddress: dto.ShippingAddress.ToEntity(),
+                clientName: dto.ClientName
             )
             {
                 Id = dto.Id

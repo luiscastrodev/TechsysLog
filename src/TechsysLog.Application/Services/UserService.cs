@@ -21,6 +21,14 @@ namespace TechsysLog.Application.Services
             _userRepository = userRepository;
         }
 
+        public async Task<BusinessResult<IEnumerable<UserResponseDto>>> GetAllAsync()
+        {
+            var users =  await _userRepository.GetAllAsync();
+            var userDtos = users.Select(user => user.ToDto());
+
+            return Success(userDtos.AsEnumerable());
+        }
+
         public async Task<BusinessResult<UserResponseDto>> RegisterAsync(CreateUserDto dto)
         {
             if (await _userRepository.EmailExistsAsync(dto.Email))

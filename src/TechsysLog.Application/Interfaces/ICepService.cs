@@ -9,6 +9,6 @@ namespace TechsysLog.Application.Interfaces
 {
     public interface ICepService
     {
-        Task<Address?> GetAddressByCepAsync(string cep);
+        Task<Address?> GetAddressByCepAsync(string zipcode);
     }
 }

@@ -12,7 +12,7 @@ namespace TechsysLog.Application.DTOS
     {
         [Required(ErrorMessage = "O novo status é obrigatório.")]
         [EnumDataType(typeof(OrderStatus), ErrorMessage = "O status informado é inválido.")]
-        public OrderStatus NewStatus { get; init; }
+        public int NewStatus { get; init; }
 
         [StringLength(500, ErrorMessage = "O motivo da alteração não pode exceder 500 caracteres.")]
         public string? Reason { get; init; }
