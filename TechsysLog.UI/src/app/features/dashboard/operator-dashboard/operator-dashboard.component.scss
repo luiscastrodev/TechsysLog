@@ -1,0 +1,345 @@
+/* =========================
+   LAYOUT GERAL
+========================= */
+.operator-dashboard {
+  padding: 24px;
+  background: #f4f6f9;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   BOTÕES DE AÇÃO
+========================= */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #1976d2;
+  color: #fff;
+
+  &:hover {
+    background: #155fa0;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* =========================
+   ESTATÍSTICAS
+========================= */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  .stat-icon {
+    font-size: 32px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  &.pending .stat-icon {
+    color: #f9a825;
+  }
+
+  &.delivered .stat-icon {
+    color: #2e7d32;
+  }
+}
+
+/* =========================
+   FILTROS
+========================= */
+
+
+.filters-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 13px;
+  color: #374151;
+}
+
+.filter-group input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  outline: none;
+}
+
+.status-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-buttons button {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.status-buttons button.active {
+  background: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+
+/* =========================
+   TABELA
+========================= */
+.orders-table-section h2 {
+  margin-bottom: 12px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  thead {
+    background: #1976d2;
+    color: #fff;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f8f9fb;
+  }
+
+  tbody tr:hover {
+    background: #eef4ff;
+  }
+}
+
+.amount {
+  font-weight: bold;
+}
+
+/* =========================
+   STATUS
+========================= */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  color: #fff;
+  display: inline-block;
+}
+
+/* =========================
+   AÇÕES
+========================= */
+.actions {
+  text-align: center;
+}
+
+.action-buttons-group {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.btn-action {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 520px;
+  padding: 16px;
+}
+
+.modal-large {
+  max-width: 700px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.close-btn {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-body {
+  margin-top: 16px;
+}
+
+/* =========================
+   FORMULÁRIOS
+========================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+
+  label {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .required {
+    color: red;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-control {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+/* =========================
+   FEEDBACK
+========================= */
+.error-message {
+  background: #fdecea;
+  color: #b71c1c;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.success-message {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   DETALHES
+========================= */
+.detail-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.detail-col {
+  flex: 1;
+}
+
+.history {
+  border-left: 3px solid #1976d2;
+  padding-left: 12px;
+}
+
+.history-item {
+  margin-bottom: 10px;
+}
+
+
+.icon-success { color: #22c55e; }
+.icon-warning { color: #f59e0b; }
+.icon-danger  { color: #ef4444; }
+.icon-default { color: #64748b; }

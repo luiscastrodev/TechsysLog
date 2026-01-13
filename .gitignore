@@ -361,3 +361,71 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+
+
+
+# ===========================
+# FRONTEND (Angular/Node.js)
+# ===========================
+
+# Dependencies
+TechsysLog.UI/node_modules/
+TechsysLog.UI/npm-debug.log
+TechsysLog.UI/yarn-error.log
+TechsysLog.UI/package-lock.json
+TechsysLog.UI/yarn.lock
+
+# Angular build output
+TechsysLog.UI/dist/
+TechsysLog.UI/.angular/
+TechsysLog.UI/.next/
+
+# Environment files
+TechsysLog.UI/src/environments/environment.prod.ts
+TechsysLog.UI/.env
+TechsysLog.UI/.env.local
+
+# IDE
+TechsysLog.UI/.vscode/
+TechsysLog.UI/.idea/
+TechsysLog.UI/*.swp
+TechsysLog.UI/*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===========================
+# RAIZ DO PROJETO
+# ===========================
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+temp/
+tmp/
+*.tmp

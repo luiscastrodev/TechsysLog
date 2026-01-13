@@ -1,0 +1,112 @@
+<div class="client-dashboard">
+
+  <!-- Estatísticas -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <span class="material-icons stat-icon">inventory_2</span>
+      <div>
+        <h3>Total de Pedidos</h3>
+        <p class="stat-value">{{ stats.total }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card pending">
+      <span class="material-icons stat-icon">hourglass_empty</span>
+      <div>
+        <h3>Aguardando</h3>
+        <p class="stat-value">{{ stats.pending }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <span class="material-icons stat-icon">settings</span>
+      <div>
+        <h3>Em Processamento</h3>
+        <p class="stat-value">{{ stats.processing }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card delivered">
+      <span class="material-icons stat-icon">check_circle</span>
+      <div>
+        <h3>Entregues</h3>
+        <p class="stat-value">{{ stats.delivered }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Buscar Pedido</label>
+      <input
+        type="text"
+        placeholder="Número ou descrição..."
+        (input)="onSearchChange($any($event.target).value)"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Status</label>
+      <div class="status-buttons">
+        <button
+          *ngFor="let status of statusOptions"
+          [class.active]="statusFilter === status.value"
+          (click)="changeStatusFilter(status.value)"
+        >
+          {{ status.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista -->
+  <div class="orders-section">
+    <h2>Meus Pedidos</h2>
+
+    <div *ngIf="filteredOrders.length === 0" class="empty-state">
+      <span class="material-icons">mail_outline</span>
+      Nenhum pedido encontrado
+    </div>
+
+    <div class="orders-grid">
+      <div
+        *ngFor="let order of filteredOrders"
+        class="order-card"
+        (click)="viewOrderDetails(order)"
+      >
+        <div class="order-header">
+          <h3>{{ order.orderNumber }}</h3>
+
+          <span
+            class="status-badge"
+            [style.backgroundColor]="getStatusColor(order.status)"
+          >
+            <span class="material-icons">
+              {{ getStatusIcon(order.status) }}
+            </span>
+            {{ getStatusLabel(order.status) }}
+          </span>
+        </div>
+
+        <p>{{ order.description }}</p>
+        <p class="amount">R$ {{ order.amount | number:'1.2-2' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div *ngIf="showOrderDetails && selectedOrder" class="modal-overlay" (click)="closeOrderDetails()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <header>
+        <h2>{{ selectedOrder.orderNumber }}</h2>
+        <button (click)="closeOrderDetails()">✕</button>
+      </header>
+
+      <section>
+        <p>{{ selectedOrder.description }}</p>
+      </section>
+    </div>
+  </div>
+
+</div>

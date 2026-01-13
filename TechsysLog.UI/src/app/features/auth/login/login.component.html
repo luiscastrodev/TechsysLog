@@ -1,0 +1,83 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="login-header">
+      <h1>TechsysLog</h1>
+      <p>Sistema de Logística</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-triangle error-icon"></i>
+        <div class="error-content">
+          <p class="error-title">Erro ao fazer login</p>
+          <p class="error-text">{{ errorMessage }}</p>
+        </div>
+        <button type="button" class="close-error" (click)="clearError()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label for="login">E-mail</label>
+        <div class="input-wrapper">
+          <input
+            id="login"
+            type="email"
+            class="form-control"
+            formControlName="login"
+            [class.is-invalid]="submitted && f['login'].errors"
+            placeholder="seu.email@example.com"
+            [disabled]="loading"
+          />
+        </div>
+        <div *ngIf="submitted && f['login'].errors" class="invalid-feedback">
+          <small *ngIf="f['login'].errors['required']">E-mail é obrigatório</small>
+          <small *ngIf="f['login'].errors['email']">E-mail inválido</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <div class="password-input-group">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control"
+            formControlName="password"
+            [class.is-invalid]="submitted && f['password'].errors"
+            placeholder="Mínimo 6 caracteres"
+            [disabled]="loading"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            [disabled]="loading"
+          >
+            <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+          </button>
+        </div>
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <small *ngIf="f['password'].errors['required']">Senha é obrigatória</small>
+          <small *ngIf="f['password'].errors['minlength']">
+            Mínimo {{ f['password'].errors['minlength'].requiredLength }} caracteres
+          </small>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="loading">
+        <span *ngIf="!loading">Entrar</span>
+        <div *ngIf="loading" class="loading-spinner">
+          <span class="spinner"></span>
+          <span>Carregando...</span>
+        </div>
+      </button>
+    </form>
+
+    <div class="register-link">
+      <p>Não tem conta? 
+        <a (click)="goToRegister()" class="link">Registre-se aqui</a>
+      </p>
+    </div>
+  </div>
+</div>

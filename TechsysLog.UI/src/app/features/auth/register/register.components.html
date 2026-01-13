@@ -1,0 +1,119 @@
+<div class="register-container">
+  <div class="register-box">
+
+    <!-- Header -->
+    <div class="register-header">
+      <span class="material-icons header-icon">person_add</span>
+      <h1>Criar Conta</h1>
+      <p>TechsysLog - Sistema de Logística</p>
+    </div>
+
+    <!-- Erro -->
+    <div *ngIf="errorMessage" class="error-message">
+      <span class="material-icons error-icon">error</span>
+      <div>
+        <p class="error-title">Erro ao registrar</p>
+        <p>{{ errorMessage }}</p>
+      </div>
+      <button type="button" (click)="clearError()">✕</button>
+    </div>
+
+    <!-- Sucesso -->
+    <div *ngIf="successMessage" class="success-message">
+      <span class="material-icons success-icon">check_circle</span>
+      <div>
+        <p class="success-title">Sucesso</p>
+        <p>{{ successMessage }}</p>
+      </div>
+    </div>
+
+    <!-- Formulário -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Nome -->
+      <div class="form-group">
+        <label>Nome Completo</label>
+        <input
+          type="text"
+          formControlName="name"
+          [class.is-invalid]="submitted && f['name'].errors"
+          [disabled]="loading"
+        />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label>E-mail</label>
+        <input
+          type="email"
+          formControlName="email"
+          [class.is-invalid]="submitted && f['email'].errors"
+          [disabled]="loading"
+        />
+      </div>
+
+      <!-- Senhas -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="password-input-group">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              [disabled]="loading"
+            />
+            <button type="button" (click)="togglePasswordVisibility()">
+              <span class="material-icons">
+                {{ showPassword ? 'visibility_off' : 'visibility' }}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Confirmar Senha</label>
+          <div class="password-input-group">
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              [disabled]="loading"
+            />
+            <button type="button" (click)="toggleConfirmPasswordVisibility()">
+              <span class="material-icons">
+                {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role -->
+      <div class="form-group">
+        <label>Tipo de Conta</label>
+        <select formControlName="role" [disabled]="loading">
+          <option *ngFor="let role of userRoles" [ngValue]="role.value">
+            {{ role.label }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Botão -->
+      <button type="submit" [disabled]="loading">
+        <span *ngIf="!loading">Criar Conta</span>
+        <span *ngIf="loading">
+          <span class="material-icons spin">autorenew</span>
+          Registrando...
+        </span>
+      </button>
+    </form>
+
+    <!-- Login -->
+    <div class="login-link">
+      <p>
+        Já tem conta?
+        <a (click)="goToLogin()">Entrar</a>
+      </p>
+    </div>
+
+  </div>
+</div>
