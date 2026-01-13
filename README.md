@@ -10,8 +10,9 @@
 
 **Plataforma completa de logística com notificações em tempo real** 📦✨
 
-[🔗 Documentação Completa](#documentação) • [⚙️ Instalação](#instalação) • [📚 API Reference](#api-reference) • [🏗️ Arquitetura](#arquitetura)
-
+[🔗 Documentação Completa]
+> 📌 Para entender todas as decisões técnicas:
+[📄 RESUMO_TÉCNICO - Decisões Técnicas](./RESUMO_TÉCNICO.md)
 </div>
 
 ---
