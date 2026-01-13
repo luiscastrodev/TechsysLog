@@ -13,6 +13,7 @@ namespace TechsysLog.Application.Interfaces
     {
         Task<BusinessResult<UserResponseDto>> RegisterAsync(CreateUserDto dto);
         Task<BusinessResult<IEnumerable< UserResponseDto>>> GetAllAsync();
+        Task<BusinessResult<UserResponseDto>> GetById(Guid userId);
 
     }
 }

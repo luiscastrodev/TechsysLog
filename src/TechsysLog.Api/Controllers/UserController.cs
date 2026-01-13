@@ -30,5 +30,19 @@ namespace TechsysLog.Api.Controllers
         {
             return Ok(await _userService.GetAllAsync());
         }
+
+        [ProducesResponseType(typeof(BusinessResult<IEnumerable<OrderResponseDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(BusinessResult<string>), StatusCodes.Status404NotFound)]
+
+        [HttpGet]
+        public async Task<IActionResult> Get(Guid  userId)
+        {
+            var result = await _userService.GetById(userId);
+
+            if (!result.IsSuccess) return NotFound();
+
+            return Ok(result);
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace TechsysLog.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(BusinessResult<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BusinessResult<bool>), StatusCodes.Status400BadRequest)]
         [HttpPost("logout")]

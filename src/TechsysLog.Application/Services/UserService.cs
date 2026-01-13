@@ -29,6 +29,15 @@ namespace TechsysLog.Application.Services
             return Success(userDtos.AsEnumerable());
         }
 
+        public async Task<BusinessResult<UserResponseDto>> GetById(Guid userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+
+            if (user == null) return BusinessResult<UserResponseDto>.Failure("Não encontrado.");
+
+            return Success(user.ToDto());
+        }
+
         public async Task<BusinessResult<UserResponseDto>> RegisterAsync(CreateUserDto dto)
         {
             if (await _userRepository.EmailExistsAsync(dto.Email))

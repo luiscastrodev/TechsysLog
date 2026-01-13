@@ -53,6 +53,8 @@ namespace TechsysLog.Application.Services
                 ExpiresAt = tokenData.RefreshTokenExpiresAt
             };
 
+            await _refreshTokenRepository.AddAsync(refreshTokenEntity);
+
             user.FailedLoginAttempts = 0;
             user.LockoutEnd = null;
             await _userRepository.UpdateAsync(user);
