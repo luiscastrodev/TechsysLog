@@ -1,4 +1,4 @@
-# 🚀 TechsysLog - Sistema de Controle de Pedidos e Entregas
+# 📖 TechsysLog - Documentação Completa (README + Testes)
 
 <div align="center">
 
@@ -7,13 +7,26 @@
 ![Angular](https://img.shields.io/badge/Angular-16%2B-DD0031?logo=angular)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Latest-13AA52?logo=mongodb)
 ![SignalR](https://img.shields.io/badge/SignalR-Realtime-512BD4?logo=.net)
+![Tests](https://img.shields.io/badge/Tests-28%20Unit%20Tests-green)
 
 **Plataforma completa de logística com notificações em tempo real** 📦✨
 
-[🔗 Documentação Completa]
-> 📌 Para entender todas as decisões técnicas:
-[📄 RESUMO_TÉCNICO - Decisões Técnicas](./RESUMO_TÉCNICO.md)
 </div>
+
+---
+
+## 📋 Índice
+
+1. [Sobre o Projeto](#sobre-o-projeto)
+2. [Stack Tecnológico](#stack-tecnológico)
+3. [Estrutura do Projeto](#estrutura-do-projeto)
+4. [Instalação e Setup](#instalação-e-setup)
+5. [API Reference](#api-reference)
+6. [SignalR - Notificações](#signalr---notificações-em-tempo-real)
+7. [Arquitetura](#arquitetura)
+8. [Segurança](#segurança)
+9. [Testes Unitários](#testes-unitários)
+10. [Como Rodar Testes](#como-rodar-os-testes)
 
 ---
 
@@ -32,58 +45,55 @@ TechsysLog é uma plataforma web moderna para gerenciamento de pedidos e acompan
 - ✅ **Rastreamento de Histórico** de pedidos e entregas
 - ✅ **Interface Responsiva** com Angular 16+
 - ✅ **MongoDB** para flexibilidade e escalabilidade
+- ✅ **28 Testes Unitários** com cobertura completa
 
 ---
 
 ## 🖼️ Galeria de Screenshots
+
 ### 🔐 Tela de Login
 ![Login Screen](./screenshots/login.png)
 *Interface de autenticação com JWT - Acesso seguro para clientes e operadores*
 
 ### 📊 Dashboard do Cliente
 ![Client Dashboard](./screenshots/dashboard-client.png)
-*Painel principal do cliente mostrando histórico de pedidos com status em tempo real via SignalR*
-<details>
-<summary>📱 <strong>Interface do Usuário</strong> (Clique para expandir)</summary>
+*Painel principal do cliente mostrando histórico de pedidos com status em tempo real*
 
-### 👨‍💼 Dashboard do Operador
+### 📱 Interface do Usuário
+
+#### 👨‍💼 Dashboard do Operador
 ![Operator Dashboard](./screenshots/dashboard-operator.png)
-*Interface de gestão para operadores logísticos com controle total de pedidos*
+*Interface de gestão para operadores logísticos*
 
-### 🔔 Painel de Notificações
+#### 🔔 Painel de Notificações
 ![Notifications Panel](./screenshots/notification.png)
-*Sistema de notificações em tempo real com marcação de lidas e contador de não lidas*
+*Sistema de notificações em tempo real*
 
-### 📦 Criação de Pedido
+#### 📦 Criação de Pedido
 ![Create Order](./screenshots/new-order.png)
-*Formulário inteligente com busca de CEP automática via API ViaCEP*
+*Formulário inteligente com busca de CEP automática*
 
-### 📦 Mudar Status de Pedido
-![Create Order](./screenshots/change-status.png)
+#### 📦 Mudar Status de Pedido
+![Change Status](./screenshots/change-status.png)
 *Alterar status do pedido*
 
-### 📦 Efetuar entrega d Pedido
-![Create Order](./screenshots/send-delivery.png)
-*Alterar status do pedido*
+#### 🚚 Efetuar Entrega
+![Send Delivery](./screenshots/send-delivery.png)
+*Registrar entrega de pedido*
 
-</details>
+### 🔌 Backend e API
 
-<details>
-<summary>🔌 <strong>Backend e API</strong> (Clique para expandir)</summary>
-
-### 📖 API Documentation - Swagger
+#### 📖 API Documentation - Swagger
 ![Swagger Documentation](./screenshots/swagger.png)
-*OpenAPI/Swagger com documentação completa de todos os endpoints*
+*OpenAPI/Swagger com documentação completa*
 
-### ✅ Exemplo de Response - Criar Pedido
+#### ✅ Exemplo de Response - Criar Pedido
 ![API Response Example](./screenshots/swagger-create-order.png)
-*Exemplo de resposta bem-sucedida da API com Business Result Pattern*
+*Exemplo de resposta bem-sucedida*
 
-### 🗄️ Banco de Dados - MongoDB
+#### 🗄️ Banco de Dados - MongoDB
 ![MongoDB Collections](./screenshots/mongo-db.png)
-*Mongo Express mostrando collections de usuários, pedidos e notificações*
-
-</details>
+*Mongo Express mostrando collections*
 
 ---
 
@@ -98,6 +108,8 @@ TechsysLog é uma plataforma web moderna para gerenciamento de pedidos e acompan
 | **JWT Bearer** | - | Autenticação |
 | **BCrypt.Net** | - | Hash seguro de senhas |
 | **MongoDB** | Latest | Banco de dados NoSQL |
+| **xUnit** | 2.6.6 | Testes Unitários |
+| **Moq** | 4.20.70 | Mocking Framework |
 
 ### Frontend
 | Tecnologia | Versão | Propósito |
@@ -130,7 +142,6 @@ TechsysLog/
 │   │   │   ├── Interfaces/           # Contratos de serviços
 │   │   │   ├── Mappers/              # Mapeamento de entidades
 │   │   │   ├── Hubs/                 # SignalR Hubs
-│   │   │   ├── Seed/                 # Dados iniciais
 │   │   │   └── Common/               # Classes compartilhadas
 │   │   │
 │   │   ├── 🏗️ TechsysLog.Domain/
@@ -138,14 +149,23 @@ TechsysLog/
 │   │   │   ├── Enums/                # Enumerações
 │   │   │   └── Interfaces/           # Contratos de repositório
 │   │   │
-│   │   ├── 🔌 TechsysLog.Infrastructure/
-│   │   │   ├── Data/
-│   │   │   │   ├── Context/          # DbContext do MongoDB
-│   │   │   │   ├── Configuration/    # configs
-│   │   │   │   └── Common/           # Repository genérico
-│   │   │   └── Repositories/         # Implementações
-│   │   │ 
-│  
+│   │   └── 🔌 TechsysLog.Infrastructure/
+│   │       ├── Data/
+│   │       │   ├── Context/          # DbContext do MongoDB
+│   │       │   ├── Configuration/    # configs
+│   │       │   └── Common/           # Repository genérico
+│   │       └── Repositories/         # Implementações
+│   │
+│   └── 📁 TechsysLog.Tests/
+│       ├── 📁 Services/
+│       │   ├── AuthenticationServiceTests.cs
+│       │   ├── OrderServiceTests.cs
+│       │   ├── DeliveryServiceTests.cs
+│       │   ├── NotificationServiceTests.cs
+│       │   ├── UserServiceTests.cs
+│       │   ├── PasswordHasherServiceTests.cs
+│       │   └── TokenServiceTests.cs
+│       └── TechsysLog.Tests.csproj
 │
 ├── 📁 frontend/TechsysLog.UI
 │   ├── 📁 src/
@@ -154,39 +174,22 @@ TechsysLog/
 │   │   │   │   ├── services/
 │   │   │   │   ├── guards/
 │   │   │   │   └── interceptors/
-│   │   │   │
 │   │   │   ├── 📦 shared/
 │   │   │   │   ├── components/
 │   │   │   │   ├── pipes/
 │   │   │   │   └── directives/
-│   │   │   │
 │   │   │   └── 🎨 features/
 │   │   │       ├── auth/
 │   │   │       ├── orders/
 │   │   │       ├── deliveries/
 │   │   │       └── notifications/
-│   │   │
 │   │   ├── assets/
 │   │   └── styles.scss
-│   │
 │   └── angular.json
 │
-├── 📁 docs/
-│   ├── ARCHITECTURE.md           # Decisões de arquitetura
-│   ├── API_REFERENCE.md          # Documentação da API
-│   └── DEPLOYMENT.md             # Guia de deploy
-│
-├── 📁 screenshots/               # Galeria de screenshots
-│   ├── 01-login.png
-│   ├── 02-dashboard-client.png
-│   ├── 03-dashboard-operator.png
-│   ├── 04-notifications.png
-│   ├── 05-create-order.png
-│   ├── 06-api-swagger.png
-│   ├── 07-api-response.png
-│   └── 08-mongodb.png
-│
-└── README.md
+└── 📁 docs/
+    ├── README.md
+    └── RESUMO_TÉCNICO.md
 ```
 
 ---
@@ -199,7 +202,7 @@ TechsysLog/
 - **.NET SDK** 7.0+
 - **MongoDB** (local ou Atlas)
 - **Git**
-- **Docker** (opcional, mas recomendado)
+- **Docker** (opcional)
 
 ### 1️⃣ Clonar o Repositório
 
@@ -208,13 +211,18 @@ git clone https://github.com/luiscastrodev/TechsysLog.git
 cd TechsysLog
 ```
 
+### 2️⃣ Setup com Docker
+
+```bash
+docker-compose up -d
+```
 
 ✅ Aplicação disponível em:
 - **API**: https://localhost:7071/api
 - **Frontend**: http://localhost:4200
 - **Mongo Express**: http://localhost:8081 (admin/mongo123)
 
-### 2️⃣ Opção B: Setup Manual
+### 3️⃣ Setup Manual
 
 #### Backend
 
@@ -224,10 +232,7 @@ cd backend
 # Restaurar dependências
 dotnet restore
 
-# Configurar conexão MongoDB em appsettings.json
-# Certifique-se de que MongoDB está rodando em: mongodb://localhost:27017
-# 
-# Criar arquivo se não existir:
+# Configurar appsettings.json com MongoDB
 # {
 #   "ConnectionStrings": {
 #     "MongoDb": "mongodb://localhost:27017/TechsysLogDB"
@@ -240,31 +245,25 @@ dotnet restore
 #   }
 # }
 
-# Rodar a API ou colocar como projeto inicial
+# Rodar a API
 dotnet run --project src/TechsysLog.Api
 ```
 
-✅ API disponível em: **https://localhost:7071/api**
-
 #### MongoDB
 
-Certifique-se de que MongoDB está rodando localmente:
-
 ```bash
-# Windows (se instalado via chocolatey/MSI)
+# Windows
 net start MongoDB
 
-# macOS (via Homebrew)
+# macOS
 brew services start mongodb-community
 
-# Linux (via apt)
+# Linux
 sudo systemctl start mongod
 
 # Docker
 docker run -d -p 27017:27017 --name mongodb mongo:latest
 ```
-
-✅ MongoDB disponível em: **mongodb://localhost:27017/TechsysLogDB**
 
 #### Frontend
 
@@ -273,13 +272,6 @@ cd frontend
 
 # Instalar dependências
 npm install
-
-# Configurar environment (já vem pré-configurado)
-# src/environments/environment.ts deve ter:
-# export const environment = {
-#   apiUrl: 'https://localhost:7071/api',
-#   hubUrl: 'https://localhost:7071'
-# };
 
 # Iniciar servidor de desenvolvimento
 ng serve
@@ -309,8 +301,6 @@ ng serve
   }
 }
 ```
-
-**⚠️ Importante:** MongoDB deve estar rodando em `mongodb://localhost:27017` com banco de dados `TechsysLogDB`
 
 ---
 
@@ -380,13 +370,13 @@ GET /api/orders
 Authorization: Bearer {accessToken}
 ```
 
-#### Listar Todos os Pedidos (Operador)
+#### Listar Todos os Pedidos
 ```http
 GET /api/orders/all
 Authorization: Bearer {accessToken}
 ```
 
-#### Alterar Status do Pedido (Operador)
+#### Alterar Status do Pedido
 ```http
 PATCH /api/orders/{orderNumber}/status
 Authorization: Bearer {accessToken}
@@ -521,8 +511,6 @@ Apresentação (API Controllers)
 - ✅ **Mapper Pattern** - Transformação de entidades
 - ✅ **Generic Repository** - Reutilização de código
 
-Para detalhes completos sobre arquitetura, padrões e decisões técnicas, consulte [ARCHITECTURE.md](./docs/ARCHITECTURE.md).
-
 ---
 
 ## 🔒 Segurança
@@ -547,93 +535,251 @@ Para detalhes completos sobre arquitetura, padrões e decisões técnicas, consu
 | `POST /api/delivery/register` | Operator, Admin |
 | `GET /api/notifications` | User |
 
----
-
-## 🌱 Seed de Dados
-
-A aplicação carrega dados iniciais automaticamente:
+### Seed de Dados
 
 **Operador Padrão:**
 - Email: `operador@techsyslog.com`
 - Senha: `Operador@123`
-- Role: Operator
 
 **Usuários de Teste:**
-- João Silva (joao.silva@email.com) - Senha: `User@123`
-- Maria Oliveira (maria.o@email.com) - Senha: `User@123`
-- Carlos Souza (carlos.souza@email.com) - Senha: `User@123`
-- Ana Costa (ana.costa@email.com) - Senha: `User@123`
+- João Silva (joao.silva@email.com) - `User@123`
+- Maria Oliveira (maria.o@email.com) - `User@123`
+- Carlos Souza (carlos.souza@email.com) - `User@123`
+- Ana Costa (ana.costa@email.com) - `User@123`
 
 ---
 
+# 🧪 Testes Unitários
 
-## 📖 Documentação Completa
+## 📦 Pacotes NuGet Necessários
 
-Consulte os arquivos adicionais:
+### Instalação via Package Manager Console
 
-- 📄 **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Decisões técnicas e padrões (9 decisões arquiteturais explicadas)
-- 📄 **[API_REFERENCE.md](./docs/API_REFERENCE.md)** - Documentação detalhada de todos os endpoints com exemplos
-- 📄 **[DEPLOYMENT.md](./docs/DEPLOYMENT.md)** - Guia de deploy em produção
-
-
-## 📊 Diagrama de Fluxo
-
-```
-┌─────────────┐
-│   Angular   │
-│  Frontend   │
-└──────┬──────┘
-       │ HTTP/SignalR
-       ↓
-┌──────────────────────┐
-│   ASP.NET Core API   │
-├──────────────────────┤
-│  Controllers         │
-│  Services            │
-│  SignalR Hub         │
-└──────┬───────────────┘
-       │
-       ↓
-┌──────────────────────┐
-│     MongoDB          │
-│   (Persistência)     │
-└──────────────────────┘
-
-┌──────────────────────┐
-│  ViaCEP API          │
-│ (Validação CEP)      │
-└──────────────────────┘
+```powershell
+Install-Package xunit -Version 2.6.6
+Install-Package xunit.runner.visualstudio -Version 2.5.6
+Install-Package Moq -Version 4.20.70
+Install-Package Microsoft.NET.Test.SDK -Version 17.8.2
+Install-Package FluentAssertions -Version 6.12.0
 ```
 
+### Instalação via CLI
+
+```bash
+dotnet add package xunit --version 2.6.6
+dotnet add package xunit.runner.visualstudio --version 2.5.6
+dotnet add package Moq --version 4.20.70
+dotnet add package Microsoft.NET.Test.SDK --version 17.8.2
+dotnet add package FluentAssertions --version 6.12.0
+```
+
+### Arquivo .csproj Completo
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="Microsoft.NET.Test.SDK" Version="17.8.2" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TechsysLog.Application\TechsysLog.Application.csproj" />
+    <ProjectReference Include="..\TechsysLog.Domain\TechsysLog.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
+```
+
+## 📊 Detalhamento dos Pacotes
+
+| Pacote | Versão | Propósito |
+|--------|--------|----------|
+| **xunit** | 2.6.6 | Framework de testes principal |
+| **xunit.runner.visualstudio** | 2.5.6 | Integração com Visual Studio |
+| **Moq** | 4.20.70 | Cria mocks das dependências |
+| **Microsoft.NET.Test.SDK** | 17.8.2 | SDK para rodar testes |
+| **FluentAssertions** | 6.12.0 | Asserts mais legíveis *(opcional)* |
+
+
+![Client Dashboard](./screenshots/tests.png)
+
+## 🏗️ Padrão AAA (Arrange-Act-Assert)
+
+```csharp
+[Fact]
+public async Task LoginAsyncWhenUserDoesntExistShouldThrowBusinessException()
+{
+    // 🔵 ARRANGE - Preparar dados
+    var email = "ghost@example.com";
+    var password = "senha123";
+
+    _mockUserRepo.Setup(x => x.GetByEmailAsync(email))
+        .ReturnsAsync((User?)null);
+
+    // 🟢 ACT - Executar ação
+    var exception = await Assert.ThrowsAsync<BusinessException>(
+        () => _sut.LoginAsync(email, password));
+
+    // 🟠 ASSERT - Verificar resultado
+    Assert.Equal("Login ou senha inválidos.", exception.Message);
+}
+```
+
+## 🔐 Testes de Autenticação - AuthenticationServiceTests
+
+| Teste | O quê Testa | Esperado |
+|-------|----------|----------|
+| `LoginAsyncWhenUserDoesntExistShouldThrowBusinessException` | Validação de usuário existente | Exceção lançada |
+| `LoginAsyncWhenAccountIsLockedShouldThrowException` | Bloqueio de conta | Exceção com data de desbloqueio |
+| `LoginAsyncWhenPasswordIsWrongShouldRegisterFailedAttempt` | Incremento de tentativas | UpdateAsync chamado 1x |
+| `LoginAsyncWithValidCredentialsShouldReturnTokens` | Login bem-sucedido | Tokens gerados |
+| `RegisterFailedLoginAsyncWhenMaxAttemptsReachedShouldLockAccount` | Lockout automático | Conta bloqueada |
+| `UnlockUserAsyncShouldClearLockoutAndResetAttempts` | Desbloqueio | LockoutEnd é null |
+| `RefreshTokenAsyncWhenTokenIsExpiredShouldReturnFailure` | Token expirado | Falha com mensagem |
+| `RefreshTokenAsyncWithValidTokenShouldGenerateNewAccessToken` | Refresh bem-sucedido | Novo token gerado |
+
+## 📦 Testes de Pedidos - OrderServiceTests
+
+| Teste | O quê Testa | Esperado |
+|-------|----------|----------|
+| `CreateOrderAsyncWhenAddressNotFoundShouldThrow` | CEP inválido | Exceção lançada |
+| `CreateOrderAsyncShouldCreateNotificationAndBroadcastViaSignalR` | Criar pedido completo | Pedido, notificação, broadcast |
+| `GetUserOrdersAsyncShouldReturnOrdersWithHistory` | Listar pedidos | Lista com histórico |
+| `GetByNumberAsyncWhenOrderNotFoundShouldReturnNull` | Pedido inexistente | Retorna null |
+| `ChangeOrderStatusAsyncShouldCreateHistoryAndNotifyUser` | Mudar status | Histórico, notificação, broadcast |
+
+## 🚚 Testes de Entrega - DeliveryServiceTests
+
+| Teste | O quê Testa | Esperado |
+|-------|----------|----------|
+| `RegisterDeliveryAsyncWhenOrderNotFoundShouldThrow` | Pedido inexistente | Exceção lançada |
+| `RegisterDeliveryAsyncShouldMarkOrderAsDeliveredAndNotifyCustomer` | Registrar entrega | Ordem marcada, notificação enviada |
+| `RegisterDeliveryAsyncWithNotesShouldIncludeNotesInDelivery` | Incluir anotações | Notas salvas |
+
+## 🔔 Testes de Notificações - NotificationServiceTests
+
+| Teste | O quê Testa | Esperado |
+|-------|----------|----------|
+| `GetUserNotificationsAsyncShouldReturnUserNotifications` | Listar notificações | Lista completa |
+| `GetUnreadCountAsyncShouldReturnCorrectCount` | Contar não lidas | Número correto |
+| `MarkAsReadAsyncShouldMarkNotificationAsRead` | Marcar como lida | Repository chamado |
+| `MarkAllAsReadAsyncShouldMarkAllUserNotificationsAsRead` | Marcar todas | Repository chamado |
+
+## 👤 Testes de Usuário - UserServiceTests
+
+| Teste | O quê Testa | Esperado |
+|-------|----------|----------|
+| `RegisterAsyncWhenEmailAlreadyExistsShouldThrow` | Email duplicado | Exceção lançada |
+| `RegisterAsyncWithNewEmailShouldCreateUser` | Novo usuário | Usuário criado |
+| `GetByIdAsyncWhenUserExistsShouldReturnUser` | Buscar usuário | Usuário encontrado |
+| `GetByIdAsyncWhenUserDoesntExistShouldReturnFailure` | Usuário inexistente | Falha retornada |
+| `GetAllAsyncShouldReturnAllUsers` | Listar todos | Lista completa |
+
+## 🔐 Testes de Hash - PasswordHasherServiceTests
+
+| Teste | O quê Testa | Esperado |
+|-------|----------|----------|
+| `HashPasswordShouldReturnDifferentHashEachTime` | Segurança BCrypt | Hashes diferentes |
+| `VerifyPasswordShouldReturnTrueForCorrectPassword` | Senha correta | Retorna true |
+| `VerifyPasswordShouldReturnFalseForIncorrectPassword` | Senha incorreta | Retorna false |
+| `VerifyPasswordShouldReturnFalseForMalformedHash` | Hash inválido | Retorna false |
+
+## 📊 Resumo de Cobertura
+
+| Service | Testes | Cenários |
+|---------|--------|----------|
+| **AuthenticationService** | 8 | Login, Lockout, Tokens, Unlock |
+| **OrderService** | 5 | Criação, Listagem, Status, Endereço |
+| **DeliveryService** | 3 | Registro, Notificação, Notas |
+| **NotificationService** | 4 | Listagem, Contagem, Marcação |
+| **UserService** | 5 | Registro, Busca, Email Duplicado |
+| **PasswordHasherService** | 4 | Hash, Verificação, Segurança |
+| **TOTAL** | **28 testes** | **Cobertura ampla** |
+
 ---
 
-## 🤝 Contribuindo
+## 🚀 Como Rodar os Testes
 
+### Via Visual Studio
 
-## 📝 Licença
+1. **Abrir Test Explorer:** `Test → Test Explorer` ou `Ctrl+E, T`
+2. **Clicar em "Run All"** para executar todos
+3. **Ou selecionar teste específico** e clicar "Run"
 
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+### Via CLI
 
----
+```bash
+# Rodar todos os testes
+dotnet test
 
-## 👥 Autor Luis Castro
+# Rodar com verbosidade
+dotnet test --verbosity normal
 
-Desenvolvido técnico para demonstrar conhecimento em:
-- Clean Architecture
-- ASP.NET Core
-- Angular
-- SignalR
-- MongoDB
-- Padrões de Design
+# Rodar teste específico
+dotnet test --filter "LoginAsyncWhenUserDoesntExistShouldThrowBusinessException"
 
-**GitHub:** https://github.com/luiscastrodev/TechsysLog
+# Gerar coverage report
+dotnet test /p:CollectCoverageMetrics=true
+```
 
----
+### Via PowerShell
 
-<div align="center">
+```powershell
+# Rodar e exibir resultado
+dotnet test -c Release
 
-**⭐ Se este projeto te ajudou, considere dar uma estrela!**
+# Rodar com reporter detalhado
+dotnet test --logger "console;verbosity=detailed"
+```
 
-Feito com ❤️ para showcasing de skills técnicos
+## 📈 Output Esperado
 
-</div>
+```
+Starting test run for TechsysLog.Tests.csproj
+
+  AuthenticationServiceTests
+    ✓ LoginAsyncWhenUserDoesntExistShouldThrowBusinessException
+    ✓ LoginAsyncWhenAccountIsLockedShouldThrowException
+    ✓ LoginAsyncWhenPasswordIsWrongShouldRegisterFailedAttempt
+    ✓ LoginAsyncWithValidCredentialsShouldReturnTokens
+    ✓ RegisterFailedLoginAsyncWhenMaxAttemptsReachedShouldLockAccount
+    ✓ UnlockUserAsyncShouldClearLockoutAndResetAttempts
+    ✓ RefreshTokenAsyncWhenTokenIsExpiredShouldReturnFailure
+    ✓ RefreshTokenAsyncWithValidTokenShouldGenerateNewAccessToken
+
+  OrderServiceTests
+    ✓ CreateOrderAsyncWhenAddressNotFoundShouldThrow
+    ✓ CreateOrderAsyncShouldCreateNotificationAndBroadcastViaSignalR
+    ✓ GetUserOrdersAsyncShouldReturnOrdersWithHistory
+    ✓ GetByNumberAsyncWhenOrderNotFoundShouldReturnNull
+    ✓ ChangeOrderStatusAsyncShouldCreateHistoryAndNotifyUser
+
+  DeliveryServiceTests
+    ✓ RegisterDeliveryAsyncWhenOrderNotFoundShouldThrow
+    ✓ RegisterDeliveryAsyncShouldMarkOrderAsDeliveredAndNotifyCustomer
+    ✓ RegisterDeliveryAsyncWithNotesShouldIncludeNotesInDelivery
+
+  NotificationServiceTests
+    ✓ GetUserNotificationsAsyncShouldReturnUserNotifications
+    ✓ GetUnreadCountAsyncShouldReturnCorrectCount
+    ✓ MarkAsReadAsyncShouldMarkNotificationAsRead
+    ✓ MarkAllAsReadAsyncShouldMarkAllUserNotificationsAsRead
+
+  UserServiceTests
+    ✓ RegisterAsyncWhenEmailAlreadyExistsShouldThrow
+    ✓ RegisterAsyncWithNewEmailShouldCreateUser
+    ✓ GetByIdAsyncWhenUserEx
